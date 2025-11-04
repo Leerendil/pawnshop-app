@@ -1,4 +1,4 @@
-package by.vsu.RepositoryClasses;
+package by.vsu.repository;
 
 import by.vsu.ConectionManager;
 import by.vsu.tableClasses.Transactions;
@@ -13,13 +13,12 @@ import java.util.List;
 public class TransactionRepository implements Repository<Transactions>{
 
     @Override
-    public void add(Transactions transaction) {
+    public void add(Transactions transaction, Connection connection) {
         String sqlQuery = """
                 INSERT INTO transactions(transaction_type, amount, transaction_date, fk_employee_id, fk_item_id) VALUES (?, ?, ?, ?, ?)
                 """;
 
-        try(Connection connection = ConectionManager.open();
-            PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             statement.setString(1, transaction.getTransactionType());
             statement.setDouble(2, transaction.getAmount());
@@ -35,14 +34,13 @@ public class TransactionRepository implements Repository<Transactions>{
     }
 
     @Override
-    public List<Transactions> getAll() {
+    public List<Transactions> getAll(Connection connection) {
         String sqlQuery = """
                 SELECT * FROM transactions
                 """;
         List<Transactions> transactions = new ArrayList<>();
 
-        try (Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -65,14 +63,13 @@ public class TransactionRepository implements Repository<Transactions>{
     }
 
     @Override
-    public Transactions getById(int id) {
+    public Transactions getById(int id, Connection connection) {
         String sqlQuery = """
                 SELECT * FROM transactions WHERE transaction_id = ?
                 """;
         Transactions transaction = null;
 
-        try(Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -94,13 +91,12 @@ public class TransactionRepository implements Repository<Transactions>{
     }
 
     @Override
-    public void update(Transactions transaction) {
+    public void update(Transactions transaction, Connection connection) {
         String sqlQuery = """
                 UPDATE transactions SET transaction_type = ?, transaction_date = ?, amount = ?, fk_employee_id = ?, fk_item_id = ? WHERE transaction_id = ?
                 """;
 
-        try (Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             statement.setString(1, transaction.getTransactionType());
             statement.setInt(2, transaction.getTransactionDate());
@@ -118,13 +114,12 @@ public class TransactionRepository implements Repository<Transactions>{
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id, Connection connection) {
         String sqlQuery = """
                 DELETE FROM transactions WHERE transaction_id = ?
                 """;
 
-        try(Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             statement.setInt(1, id);
 

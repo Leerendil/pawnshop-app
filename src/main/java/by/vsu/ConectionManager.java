@@ -13,8 +13,11 @@ public final class ConectionManager {
 
     public static Connection open() {
         try {
+
+            Class.forName("org.postgresql.Driver");
+
             return DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

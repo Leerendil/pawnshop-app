@@ -1,4 +1,4 @@
-package by.vsu.RepositoryClasses;
+package by.vsu.repository;
 
 import by.vsu.ConectionManager;
 import by.vsu.tableClasses.Employees;
@@ -9,17 +9,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 public class EmployeesRepository implements Repository<Employees> {
     @Override
-    public void add(Employees employee) {
+    public void add(Employees employee, Connection connection) {
         String sqlQuety = """
                 INSERT INTO employees (first_name, last_name, role_of_employee) VALUES (?, ?, ?)
                 """;
 
-        try(Connection connection = ConectionManager.open();
-            PreparedStatement statement = connection.prepareStatement(sqlQuety)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuety)) {
 
             statement.setString(1, employee.getFirst_name());
             statement.setString(2, employee.getLast_name());
@@ -33,14 +31,13 @@ public class EmployeesRepository implements Repository<Employees> {
     }
 
     @Override
-    public List<Employees> getAll() {
+    public List<Employees> getAll(Connection connection) {
         String sqlQuery = """
                 SELECT * FROM employees
                 """;
         List<Employees> employees = new ArrayList<>();
 
-        try(Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             ResultSet resultSet = statement.executeQuery();
 
             while(resultSet.next()) {
@@ -61,14 +58,13 @@ public class EmployeesRepository implements Repository<Employees> {
     }
 
     @Override
-    public Employees getById(int id) {
+    public Employees getById(int id, Connection connection) {
         String sqlQuery = """
                 SELECT * FROM employees WHERE employee_id = ?
                 """;
         Employees employee = null;
 
-        try(Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             statement.setInt(1, id);
 
             ResultSet resultSet = statement.executeQuery();
@@ -90,13 +86,12 @@ public class EmployeesRepository implements Repository<Employees> {
     }
 
     @Override
-    public void update(Employees employee) {
+    public void update(Employees employee, Connection connection) {
         String sqlQuery = """
                 UPDATE employees SET first_name = ?, last_name = ?, role_of_employee = ? WHERE employee_id = ?
                 """;
 
-        try(Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             statement.setString(1, employee.getFirst_name());
             statement.setString(2, employee.getLast_name());
@@ -111,13 +106,12 @@ public class EmployeesRepository implements Repository<Employees> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id, Connection connection) {
         String sqlQuery = """
                 DELETE FROM employees WHERE employee_id = ?
                 """;
 
-        try(Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             statement.setInt(1, id);
 

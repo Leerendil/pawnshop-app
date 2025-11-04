@@ -1,4 +1,4 @@
-package by.vsu.RepositoryClasses;
+package by.vsu.repository;
 
 import by.vsu.ConectionManager;
 import by.vsu.tableClasses.Clients;
@@ -13,13 +13,12 @@ import java.util.List;
 public final class ClientsRepository implements Repository<Clients> {
 
     @Override
-    public void add(Clients client) {
+    public void add(Clients client, Connection connection) {
         String sqlQuery = """
                 INSERT INTO clients (passport_number, first_name, last_name, phone_number) VALUES (?, ?, ?, ?)
                 """;
 
-        try (Connection connection = ConectionManager.open();
-             PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             statement.setInt(1, client.getPassport_number());
             statement.setString(2, client.getFirst_name());
@@ -34,13 +33,12 @@ public final class ClientsRepository implements Repository<Clients> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id, Connection connection) {
         String sqlQuery = """
                 DELETE FROM clients WHERE client_id = ?
                 """;
 
-        try(Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             statement.setInt(1, id);
 
@@ -52,13 +50,12 @@ public final class ClientsRepository implements Repository<Clients> {
     }
 
     @Override
-    public void update(Clients client) {
+    public void update(Clients client, Connection connection) {
         String sqlQuery = """
                 UPDATE clients SET passport_number = ?, first_name = ?, last_name = ?, phone_number = ? WHERE client_id = ?
                 """;
 
-        try(Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             statement.setInt(1, client.getPassport_number());
             statement.setString(2, client.getFirst_name());
@@ -75,14 +72,13 @@ public final class ClientsRepository implements Repository<Clients> {
     }
 
     @Override
-    public Clients getById(int id) {
+    public Clients getById(int id, Connection connection) {
         String sqlQuery = """
                 SELECT * FROM clients WHERE client_id = ?
                 """;
         Clients client = null;
 
-        try (Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             statement.setInt(1, id);
 
@@ -107,14 +103,13 @@ public final class ClientsRepository implements Repository<Clients> {
     }
 
     @Override
-    public List<Clients> getAll() {
+    public List<Clients> getAll(Connection connection) {
         String sqlQuery = """
                 SELECT * FROM clients
                 """;
         List<Clients> clients = new ArrayList<>();
 
-        try (Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             ResultSet resultSet = statement.executeQuery();
 

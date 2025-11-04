@@ -1,4 +1,4 @@
-package by.vsu.RepositoryClasses;
+package by.vsu.repository;
 
 import by.vsu.ConectionManager;
 import by.vsu.tableClasses.Items;
@@ -13,13 +13,12 @@ import java.util.List;
 public class ItemsRepository implements Repository<Items> {
 
     @Override
-    public void add(Items item) {
+    public void add(Items item, Connection connection) {
         String sqlQuery = """
                 INSERT INTO items (item_name, item_pledge_amount, item_status, fk_client_id, fk_category_id) VALUES (?, ?, ?, ?, ?) 
                 """;
 
-        try(Connection connection = ConectionManager.open();
-            PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             statement.setString(1, item.getItem_name());
             statement.setDouble(2, item.getItem_pledge_amount());
             statement.setString(3, item.getItem_status());
@@ -34,14 +33,13 @@ public class ItemsRepository implements Repository<Items> {
     }
 
     @Override
-    public List<Items> getAll() {
+    public List<Items> getAll(Connection connection) {
         String sqlQuery = """
                 SELECT * FROM items
                 """;
         List<Items> items = new ArrayList<>();
 
-        try(Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -65,14 +63,13 @@ public class ItemsRepository implements Repository<Items> {
     }
 
     @Override
-    public Items getById(int id) {
+    public Items getById(int id, Connection connection) {
         String sqlQuery = """
                 SELECT * FROM items WHERE item_id = ?
                 """;
         Items item = null;
 
-        try(Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -97,7 +94,7 @@ public class ItemsRepository implements Repository<Items> {
     }
 
     @Override
-    public void update(Items item) {
+    public void update(Items item, Connection connection) {
         String sqlQuery = """
                 UPDATE
                     items
@@ -107,8 +104,7 @@ public class ItemsRepository implements Repository<Items> {
                     item_id = ?
                 """;
 
-        try(Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             statement.setString(1, item.getItem_name());
             statement.setDouble(2, item.getItem_pledge_amount());
@@ -126,13 +122,12 @@ public class ItemsRepository implements Repository<Items> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id, Connection connection) {
         String sqlQuery = """
                 DELETE FROM items WHERE item_id = ?
                 """;
 
-        try(Connection connection = ConectionManager.open();
-        PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try(PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
 
             statement.setInt(1, id);
 
