@@ -6,12 +6,12 @@
 
     <servlet>
         <servlet-name>helloServlet</servlet-name>
-        <servlet-class>by.vsu.controllers.TestServlet</servlet-class>
+        <servlet-class>by.vsu.controllers.StartServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>helloServlet</servlet-name>
-        <url-pattern>/hello</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -21,7 +21,7 @@
 
     <servlet-mapping>
         <servlet-name>clientServlet</servlet-name>
-        <url-pattern>/client</url-pattern>
+        <url-pattern>/client/*</url-pattern>
     </servlet-mapping>
 
 
