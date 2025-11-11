@@ -4,6 +4,7 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
 
+    <!-- Start Window -->
     <servlet>
         <servlet-name>helloServlet</servlet-name>
         <servlet-class>by.vsu.controllers.StartServlet</servlet-class>
@@ -14,6 +15,7 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <!-- Client -->
     <servlet>
         <servlet-name>clientServlet</servlet-name>
         <servlet-class>by.vsu.controllers.ClientServlet</servlet-class>
@@ -24,7 +26,49 @@
         <url-pattern>/client/*</url-pattern>
     </servlet-mapping>
 
+    <!-- Category -->
+    <servlet>
+        <servlet-name>categoryServlet</servlet-name>
+        <servlet-class>by.vsu.controllers.CategoryServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>categoryServlet</servlet-name>
+        <url-pattern>/categories/*</url-pattern>
+    </servlet-mapping>
 
+    <!-- Employee -->
+    <servlet>
+        <servlet-name>employeeServlet</servlet-name>
+        <servlet-class>by.vsu.controllers.EmployeeServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>employeeServlet</servlet-name>
+        <url-pattern>/employees/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Item -->
+    <servlet>
+        <servlet-name>itemServlet</servlet-name>
+        <servlet-class>by.vsu.controllers.ItemServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>itemServlet</servlet-name>
+        <url-pattern>/items/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Transaction -->
+    <servlet>
+        <servlet-name>transactionServlet</servlet-name>
+        <servlet-class>by.vsu.controllers.TransactionServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>transactionServlet</servlet-name>
+        <url-pattern>/transactions/*</url-pattern>
+    </servlet-mapping>
 </web-app>
 
 <!--

@@ -66,11 +66,11 @@ public class Clients {
 
     @Override
     public String toString() {
-        return "\nClient: " + client_id +
-               ", passport number " + passport_number +
-               ", first name " + first_name +
-               ", last name " + last_name +
-               ", phone number " + phone_number;
+        return "\nClient " + client_id +
+               ", " + passport_number +
+               ", " + first_name +
+               ", " + last_name +
+               ", " + phone_number;
     }
 
 }

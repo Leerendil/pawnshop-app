@@ -59,10 +59,15 @@ public final class CategoriesRepository implements Repository<Categories> {
         Categories category = null;
 
         try(PreparedStatement statement = connection.prepareStatement(sqlQuery);) {
+            statement.setInt(1, id);
+
             ResultSet resultSet = statement.executeQuery();
 
             if(resultSet.next()) {
-                category = new Categories(resultSet.getString("categorie_name"));
+                category = new Categories(
+                        resultSet.getInt("category_id"),
+                        resultSet.getString("category_name")
+                );
             }
 
             resultSet.close();

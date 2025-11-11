@@ -1,20 +1,20 @@
 package by.vsu.controllers;
 
-import by.vsu.repository.ClientsRepository;
-import by.vsu.service.ClientService;
-import by.vsu.tableClasses.Clients;
+import by.vsu.repository.ItemsRepository;
+import by.vsu.service.ItemService;
+import by.vsu.tableClasses.Items;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public class ClientServlet extends HttpServlet {
-    private ClientService clientService;
+public class ItemServlet extends HttpServlet {
+    private ItemService itemService;
 
     @Override
     public void init() {
-        clientService = new ClientService(new ClientsRepository());
+        itemService = new ItemService(new ItemsRepository());
     }
 
     @Override
@@ -30,7 +30,6 @@ public class ClientServlet extends HttpServlet {
             case "/getById" -> getById(req, resp);
             case "/delete" -> delete(req, resp);
             default -> resp.getWriter().println("No such path!");
-
         }
     }
 
@@ -44,7 +43,6 @@ public class ClientServlet extends HttpServlet {
         if (path.equals("/add")) {
             add(req, resp);
         }
-
     }
 
     @Override
@@ -61,10 +59,10 @@ public class ClientServlet extends HttpServlet {
 
     private void getAll(HttpServletResponse resp) {
         try {
-            var clients = clientService.getAll();
-            resp.getWriter().println("<h2>Clients list:</h2>");
-            for (var client : clients) {
-                resp.getWriter().println(client.toString() + "<br>");
+            var items = itemService.getAll();
+            resp.getWriter().println("<h2>Items list:</h2>");
+            for (var item : items) {
+                resp.getWriter().println(item.toString().replace("\n", "<br>") + "<br><br>");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -74,12 +72,12 @@ public class ClientServlet extends HttpServlet {
     private void getById(HttpServletRequest req, HttpServletResponse resp) {
         try {
             int id = Integer.parseInt(req.getParameter("id"));
-            Clients client = clientService.getById(id);
-            if (client != null) {
-                resp.getWriter().println("<h2>Client:</h2>");
-                resp.getWriter().println("<p>Id:" + client.getClient_id() + ", " + client.getFirst_name() + ", " + client.getLast_name() + "</p>");
+            Items item = itemService.getById(id);
+            if (item != null) {
+                resp.getWriter().println("<h2>Item:</h2>");
+                resp.getWriter().println(item.toString().replace("\n", "<br>"));
             } else {
-                resp.getWriter().println("<h3>No client with such id!</h3>");
+                resp.getWriter().println("<h3>No item with such id!</h3>");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -89,8 +87,8 @@ public class ClientServlet extends HttpServlet {
     private void delete(HttpServletRequest req, HttpServletResponse resp) {
         try {
             int id = Integer.parseInt(req.getParameter("id"));
-            clientService.delete(id);
-            resp.getWriter().println("<h3>Client deleted!</h3>");
+            itemService.delete(id);
+            resp.getWriter().println("<h3>Item deleted!</h3>");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -98,16 +96,17 @@ public class ClientServlet extends HttpServlet {
 
     private void add(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            int passport = Integer.parseInt(req.getParameter("passport_number"));
-            String first_name = req.getParameter("first_name");
-            String last_name = req.getParameter("last_name");
-            int phone_number = Integer.parseInt(req.getParameter("phone_number"));
+            String itemName = req.getParameter("item_name");
+            double pledgeAmount = Double.parseDouble(req.getParameter("item_pledge_amount"));
+            String itemStatus = req.getParameter("item_status");
+            int fkClientId = Integer.parseInt(req.getParameter("fk_client_id"));
+            int fkCategoryId = Integer.parseInt(req.getParameter("fk_category_id"));
 
-            Clients client = new Clients(passport, first_name, last_name, phone_number);
+            Items item = new Items(itemName, pledgeAmount, itemStatus, fkClientId, fkCategoryId);
 
-            clientService.add(client);
+            itemService.add(item);
 
-            resp.getWriter().println("<h3>Client added!</h3>");
+            resp.getWriter().println("<h3>Item added!</h3>");
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -118,20 +117,20 @@ public class ClientServlet extends HttpServlet {
         try {
             int id = Integer.parseInt(req.getParameter("id"));
 
-            int passport = Integer.parseInt(req.getParameter("passport_number"));
-            String first_name = req.getParameter("first_name");
-            String last_name = req.getParameter("last_name");
-            int phone_number = Integer.parseInt(req.getParameter("phone_number"));
+            String itemName = req.getParameter("item_name");
+            double pledgeAmount = Double.parseDouble(req.getParameter("item_pledge_amount"));
+            String itemStatus = req.getParameter("item_status");
+            int fkClientId = Integer.parseInt(req.getParameter("fk_client_id"));
+            int fkCategoryId = Integer.parseInt(req.getParameter("fk_category_id"));
 
-            Clients client = new Clients(id, passport, first_name, last_name, phone_number);
+            Items item = new Items(id, itemName, pledgeAmount, itemStatus, fkClientId, fkCategoryId);
 
-            clientService.update(client);
+            itemService.update(item);
 
-            resp.getWriter().println("<h3>Client updated!</h3>");
+            resp.getWriter().println("<h3>Item updated!</h3>");
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
 }

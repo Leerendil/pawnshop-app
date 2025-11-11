@@ -33,8 +33,7 @@ public class Categories {
 
     @Override
     public String toString() {
-        return "Category: " +
-               "\ncategory id: " + category_id +
-               "\ncategory name: " + categoriy_name;
+        return "Category " + category_id +
+               ", " + categoriy_name + ";";
     }
 }

@@ -55,10 +55,8 @@ public class Employees {
 
     @Override
     public String toString() {
-        return "Emplotyee: " +
-               "\nemployee id: " + employee_id +
-               "\nfirst name: " + first_name +
-               "\nlast name: " + last_name +
-               "\nrole of employee: " + role_of_employee;
+        return "Emplotyee " + employee_id +
+               ", " + first_name + " " + last_name +
+               ", " + role_of_employee + ";";
     }
 }

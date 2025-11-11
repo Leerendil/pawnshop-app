@@ -18,11 +18,13 @@ public abstract class Service <T> {
 
     public List<T> getAll() {
         try (Connection connection = ConectionManager.open()) {
+
             connection.setAutoCommit(false);
 
             List<T> entities = new ArrayList<>(repository.getAll(connection));
 
             connection.commit();
+
             return entities;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -51,6 +53,34 @@ public abstract class Service <T> {
             connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting entity: " + e.getMessage(), e);
+        }
+    }
+
+    public void add(T entity) {
+        try (Connection connection = ConectionManager.open()) {
+
+            connection.setAutoCommit(false);
+
+            repository.add(entity, connection);
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void update(T entity) {
+        try(Connection connection = ConectionManager.open()) {
+
+            connection.setAutoCommit(false);
+
+            repository.update(entity, connection);
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
